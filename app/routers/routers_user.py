@@ -3,14 +3,18 @@ import app.models.models as models
 from app.db.database import engine
 from app.db.configuration import db_dependency
 from app.models.models import UserBase
+from passlib.context import CryptContext
 
 router = APIRouter()
 models.Base.metadata.create_all(bind=engine)
+
+cypt_context = CryptContext(schemes=["sha256_crypt"])
 
 
 @router.post("/users/", status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserBase, db: db_dependency):
     db_user = models.User(**user.dict())
+    db_user.password = cypt_context.hash(db_user.password)
     db.add(db_user)
     db.commit()
 
