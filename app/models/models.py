@@ -11,6 +11,7 @@ class PostBase(BaseModel):
 
 class UserBase(BaseModel):
     username: str
+    password: str
 
 
 class User(Base):
@@ -18,6 +19,7 @@ class User(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True)
+    password = Column(String(100), nullable=False)
 
 
 class Post(Base):
