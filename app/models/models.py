@@ -1,17 +1,5 @@
 from sqlalchemy import Boolean, Column, Integer, String
-from pydantic import BaseModel
 from app.db.database import Base
-
-
-class PostBase(BaseModel):
-    title: str
-    content: str
-    user_id: int
-
-
-class UserBase(BaseModel):
-    username: str
-    password: str
 
 
 class User(Base):
