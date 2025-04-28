@@ -52,3 +52,20 @@ def create_token(user: UserLogin, db: db_dependency, expires_in: int = 30):
     access_token = jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
     return {"access_token": access_token, "exp": exp.isoformat()}
+
+def verify_token(access_token):
+    try:
+        data = jwt.decode(access_token, SECRET_KEY, algorithms=[ALGORITHM])
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid acess token'
+        )
+        
+    #db_user = db.query(models.User).filter_by(username=data['sub']).first()
+
+    #if db_user is None:
+     #  raise HTTPException(
+      #      status_code=status.HTTP_401_UNAUTHORIZED,
+      #      detail='Invalid acess token'
+      #  ) 

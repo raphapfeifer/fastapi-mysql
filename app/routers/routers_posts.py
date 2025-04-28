@@ -1,10 +1,12 @@
+from fastapi import Depends
 from fastapi import APIRouter, HTTPException, status
 import app.models.models as models
 from app.db.database import engine
 from app.db.configuration import db_dependency
+from app.depends.depends_auth import token_verifier
 from app.schemas.post_schema import PostBase
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(token_verifier)])
 models.Base.metadata.create_all(bind=engine)
 
 

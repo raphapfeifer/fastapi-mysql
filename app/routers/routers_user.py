@@ -1,12 +1,14 @@
+from fastapi import Depends
 from typing import List
 from fastapi import APIRouter, HTTPException, status
 import app.models.models as models
 from app.db.database import engine
 from app.db.configuration import db_dependency
+from app.depends.depends_auth import token_verifier
 from app.schemas.user_schema import UserBase
 from passlib.context import CryptContext
 
-router = APIRouter()
+router = APIRouter(dependencies=[Depends(token_verifier)])
 models.Base.metadata.create_all(bind=engine)
 user: UserBase
 users: List[UserBase]
