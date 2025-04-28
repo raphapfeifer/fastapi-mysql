@@ -1,7 +1,9 @@
 from fastapi import Depends
+from fastapi.security import OAuth2PasswordBearer
 from typing import Annotated
-from app.db.database import SessionLocal
 from sqlalchemy.orm import Session
+from app.db.database import SessionLocal
+
 
 
 def get_db():
