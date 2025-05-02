@@ -9,6 +9,7 @@ from app.schemas.user_schema import UserBase
 from passlib.context import CryptContext
 
 router = APIRouter(dependencies=[Depends(token_verifier)])
+user_post_router = APIRouter()
 models.Base.metadata.create_all(bind=engine)
 user: UserBase
 users: List[UserBase]
@@ -16,7 +17,7 @@ users: List[UserBase]
 cypt_context = CryptContext(schemes=["sha256_crypt"])
 
 
-@router.post("/users/", status_code=status.HTTP_201_CREATED)
+@user_post_router.post("/users/", status_code=status.HTTP_201_CREATED)
 async def create_user(user: UserBase, db: db_dependency):
     db_user = models.User(**user.dict())
     db_user.password = cypt_context.hash(db_user.password)

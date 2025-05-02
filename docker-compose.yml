@@ -1,0 +1,29 @@
+version: "3.9"
+services: 
+  mysql-teste:
+    image: mysql:latest
+    env_file: ./.env
+    environment:
+      MYSQL_ROOT_PASSWORD: $PASSWORD
+      MYSQL_DATABASE: blog-application
+    container_name: mysql-teste-docker
+    networks:
+      - compose-bridge
+
+  fastapi-mysql:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: fastapi-mysql:latest  
+    networks:
+      - compose-bridge
+    ports:
+      - 8000:8000
+    depends_on:
+      - mysql-teste
+    environment:
+      DATABASE_URL: mysql+pymysql:root:root@localhost:3306/blog-application      
+
+networks:
+  compose-bridge:
+    driver: bridge
